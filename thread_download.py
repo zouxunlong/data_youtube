@@ -27,7 +27,7 @@ def main(
         id_file = id_files_share.pop()
         directory = os.path.join(output_dir, id_file.split('/')[-1].split(".")[0])
 
-        with ThreadPoolExecutor(max_workers=10) as pool:
+        with ThreadPoolExecutor() as pool:
 
             for id in open(id_file).readlines():
                 id = id.strip()
@@ -49,7 +49,7 @@ def main(
 
 if __name__ == "__main__":
     print("main process id {} starts.".format(os.getpid()), flush=True)
-    open("./pid", "w", encoding="utf8").write(str(os.getpid())+" ")
+    open("./pid.log", "w", encoding="utf8").write(str(os.getpid())+" ")
 
     output_dir = "./youtube8m"
     id_file_dir = "./category-ids"
