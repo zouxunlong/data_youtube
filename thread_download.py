@@ -57,15 +57,16 @@ if __name__ == "__main__":
     id_files.sort(reverse=True)
     id_files = [os.path.join(id_file_dir, id_file) for id_file in id_files]
 
-    thunder5_list=id_files[:50]
-    thunder1_list=id_files[50:100]
-    thunder8_list=id_files[100:150]
-    thunder7_list=id_files
+    list_thunder5=id_files[:50]
+    list_thunder1=id_files[50:100]
+    list_thunder8=id_files[100:150]
+    list_demo2=id_files[150:200]
+    list_thunder7=id_files[200:]
 
     error_urls = [url.strip() for url in open("./error_urls.log").readlines()]
 
     main(output_dir="./youtube8m",
-         id_files_share=thunder1_list,
+         id_files_share=list_thunder1,
          error_urls=error_urls
          )
 
