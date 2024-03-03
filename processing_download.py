@@ -26,6 +26,8 @@ def main(
         id_file = id_files_share.pop()
         directory = os.path.join(output_dir, id_file.split('/')[-1].split(".")[0])
 
+        print("tasks for id_file: {} started.".format(id_file), flush=True)
+
         for id in open(id_file).readlines():
             id = id.strip()
             if id in ["AccessDenie"]:
