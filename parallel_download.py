@@ -55,7 +55,12 @@ if __name__ == "__main__":
     id_file_dir = "./category-ids"
     id_files = os.listdir(id_file_dir)
     id_files.sort(reverse=True)
-    id_files = [os.path.join(id_file_dir, id_file) for id_file in id_files]
+    id_files = [os.path.join(id_file_dir, id_file) for id_file in id_files][50:100]
+
+    thunder5_list=id_files[:50]
+    thunder1_list=id_files[50:100]
+    thunder8_list=id_files[100:150]
+    thunder7_list=id_files
 
     manager = Manager()
     id_files_share = manager.list()
