@@ -11,7 +11,7 @@ def download_video(video_url, directory, filename):
         stream = yt.streams.filter(
             file_extension='mp4', resolution='360p').first()
         stream.download(directory, filename=filename)
-        # print(f"downloaded:{filename}", flush=True)
+        print(f"downloaded:{filename}", flush=True)
     except Exception as e:
         print('error {} during downloading {}'.format(e, video_url), flush=True)
         open("./error_urls.log", "a", encoding="utf8").write(video_url+"\n")
