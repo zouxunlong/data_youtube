@@ -19,7 +19,7 @@ def download_video(video_url, directory, filename):
 def main(
         output_dir: str = "./youtube8m",
         id_files_share: list[str] = [],
-        error_urls: list[str] = [],
+        error_ids: list[str] = [],
 ):
     while id_files_share:
 
@@ -28,20 +28,25 @@ def main(
 
         print("tasks for id_file: {} started.".format(id_file), flush=True)
 
-        for id in open(id_file).readlines():
+        for i, id in enumerate(open(id_file).readlines()):
             id = id.strip()
-            if id in ["AccessDenie"]:
-                continue
-
-            video_url = 'https://www.youtube.com/watch?v=' + id
-            if video_url in error_urls:
+            if id in ["AccessDenie"]+error_ids:
                 continue
 
             filename = '{}.mp4'.format(id)
             if os.path.exists(os.path.join(directory, filename)):
                 continue
 
-            download_video(video_url, directory, filename)
+            try:
+                video_url = 'https://www.youtube.com/watch?v={}'.format(id)
+                yt = YouTube(video_url)
+                stream = yt.streams.filter(file_extension='mp4', resolution='360p').first()
+                if stream:
+                    download_video(stream, directory, filename, i)
+                    print("submited {} th id: {}".format(i, id), flush=True)
+            except Exception as e:
+                print('error on {} th id: {}: {} url: {}'.format(i, id, e, video_url), flush=True)
+                open("./error_ids.log", "a", encoding="utf8").write(id+"\n")
 
         print("tasks for id_file: {} submitted.".format(id_file), flush=True)
 
@@ -64,15 +69,16 @@ if __name__ == "__main__":
 
     manager = Manager()
     id_files_share = manager.list()
-    id_files_share.extend(list_demo2)
+    
+    id_files_share.extend(list_thunder5)
 
-    error_urls = [url.strip() for url in open("./error_urls.log").readlines()]
+    error_ids = [url.strip() for url in open("./error_ids.log").readlines()]
 
     num_cpus = os.cpu_count()
     process_list = []
 
     for i in [i for i in range(20)]:
-        process = Process(target=main, args=(output_dir, id_files_share, error_urls))
+        process = Process(target=main, args=(output_dir, id_files_share, error_ids))
         process.start()
         process_list.append(process)
         p = psutil.Process(process.pid)

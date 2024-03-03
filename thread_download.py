@@ -5,46 +5,49 @@ import psutil
 import os
 
 
-def download_video(video_url, directory, filename):
+def download_video(stream, directory, filename, i):
     try:
-        yt = YouTube(video_url)
-        stream = yt.streams.filter(
-            file_extension='mp4', resolution='360p').first()
         stream.download(directory, filename=filename)
-        print(f"downloaded:{filename}", flush=True)
+        print("download {} th id: {}".format(i, filename.split(".")[0]), flush=True)
     except Exception as e:
-        print('error {} during downloading {}'.format(e, video_url), flush=True)
-        open("./error_urls.log", "a", encoding="utf8").write(video_url+"\n")
+        print('error during downloading {}: {}'.format(filename, e), flush=True)
 
 
 def main(
         output_dir: str = "./youtube8m",
         id_files_share: list[str] = [],
-        error_urls: list[str] = [],
+        error_ids: list[str] = [],
 ):
     while id_files_share:
 
         id_file = id_files_share.pop()
         directory = os.path.join(output_dir, id_file.split('/')[-1].split(".")[0])
 
-        with ThreadPoolExecutor() as pool:
+        print("tasks for id_file: {} started.".format(id_file), flush=True)
 
-            for id in open(id_file).readlines():
+        with ThreadPoolExecutor(max_workers=10) as pool:
+
+            for i, id in enumerate(open(id_file).readlines()):
                 id = id.strip()
-                if id in ["AccessDenie"]:
-                    continue
-
-                video_url = 'https://www.youtube.com/watch?v=' + id
-                if video_url in error_urls:
+                if id in ["AccessDenie"]+error_ids:
                     continue
 
                 filename = '{}.mp4'.format(id)
                 if os.path.exists(os.path.join(directory, filename)):
                     continue
 
-                pool.submit(download_video, video_url, directory, filename)
+                try:
+                    video_url = 'https://www.youtube.com/watch?v={}'.format(id)
+                    yt = YouTube(video_url)
+                    stream = yt.streams.filter(file_extension='mp4', resolution='360p').first()
+                    if stream:
+                        pool.submit(download_video, stream, directory, filename, i)
+                        print("submited {} th id: {}".format(i, id), flush=True)
+                except Exception as e:
+                    print('error on {} th id: {}: {} url: {}'.format(i, id, e, video_url), flush=True)
+                    open("./error_ids.log", "a", encoding="utf8").write(id+"\n")
 
-            print("tasks for id_file: {} submitted.".format(id_file), flush=True)
+        print("tasks for id_file: {} completed.".format(id_file), flush=True)
 
 
 if __name__ == "__main__":
@@ -63,11 +66,11 @@ if __name__ == "__main__":
     list_demo2=id_files[150:200]
     list_thunder7=id_files[200:]
 
-    error_urls = [url.strip() for url in open("./error_urls.log").readlines()]
+    error_ids = [url.strip() for url in open("./error_ids.log").readlines()]
 
     main(output_dir="./youtube8m",
-         id_files_share=list_thunder1,
-         error_urls=error_urls
+         id_files_share=list_thunder5,
+         error_ids=error_ids
          )
 
     print("all finished.", flush=True)
