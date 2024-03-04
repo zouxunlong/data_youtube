@@ -56,21 +56,15 @@ if __name__ == "__main__":
     open("./pid.log", "w", encoding="utf8").write(str(os.getpid())+" ")
 
     output_dir = "./youtube8m"
-    id_file_dir = "./category-ids"
+    id_file_dir = "./category-id/id_files"
     id_files = os.listdir(id_file_dir)
     id_files.sort(reverse=True)
     id_files = [os.path.join(id_file_dir, id_file) for id_file in id_files]
 
-    list_thunder5=id_files[:50]
-    list_thunder1=id_files[50:100]
-    list_thunder8=id_files[100:150]
-    list_demo2=id_files[150:200]
-    list_thunder7=id_files[200:]
-
     manager = Manager()
     id_files_share = manager.list()
     
-    id_files_share.extend(list_thunder5)
+    id_files_share.extend(id_files)
 
     error_ids = [url.strip() for url in open("./error_ids.log").readlines()]
 
