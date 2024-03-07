@@ -30,7 +30,7 @@ def download_videos_from_list(file_path, directory):
 
 if __name__ == "__main__":
     
-    file_path = "./category-ids/0cvq3.txt"
-    directory = "./jinyang/0cvq3"
+    file_path = "./category-id/0ch_cf.txt"
+    directory = "./youtube8m/0ch_cf"
 
     download_videos_from_list(file_path, directory)
