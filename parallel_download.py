@@ -13,7 +13,7 @@ def main(
     while len(id_files_share)>0:
 
         id_file = id_files_share.pop()
-        directory = os.path.join(output_dir, id_file.split('/')[-1].split(".")[0])
+        directory = os.path.join(output_dir, id_file.split('/')[-2], id_file.split('/')[-1].split(".")[0])
 
         print("tasks for id_file: {} started.".format(id_file), flush=True)
 
@@ -41,11 +41,16 @@ if __name__ == "__main__":
 
     print("main process id {} starts.".format(os.getpid()), flush=True)
     open("./pid.log", "w", encoding="utf8").write(str(os.getpid())+" ")
-    output_dir = "./youtube8m/09"
-    id_file_dir = "./category-ids/09"
-    id_files = os.listdir(id_file_dir)
+    output_dir = "./youtube8m"
+    id_file_dirs = ["./category-ids/07", "./category-ids/08", "./category-ids/02"]
+
+    id_files=[]
+    for id_file_dir in id_file_dirs:
+        for parent_dir, dirs, files in os.walk(id_file_dir):
+            for file in files:
+                id_files.append(os.path.join(parent_dir, file))
     id_files.sort()
-    id_files = [os.path.join(id_file_dir, id_file) for id_file in id_files]
+
     error_ids = [line.split()[0] for line in open("./error_ids.log").readlines()]
 
     manager = Manager()
@@ -55,7 +60,7 @@ if __name__ == "__main__":
     num_cpus = os.cpu_count()
     process_list = []
 
-    for i in [i for i in range(17)]:
+    for i in [i for i in range(26)]:
         process = Process(target=main, args=(output_dir, id_files_share, error_ids))
         process.start()
         process_list.append(process)
