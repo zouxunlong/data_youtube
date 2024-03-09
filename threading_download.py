@@ -1,8 +1,7 @@
 from concurrent.futures import ThreadPoolExecutor
-from multiprocessing import Process, Manager
-import psutil
 import os
 from utils import remove_empty, download
+
 
 
 def main(
@@ -10,7 +9,7 @@ def main(
         id_files_share: list[str] = [],
         error_ids: list[str] = [],
 ):
-    while len(id_files_share)>0:
+    while id_files_share:
 
         id_file = id_files_share.pop()
         directory = os.path.join(output_dir, id_file.split('/')[-1].split(".")[0])
@@ -36,33 +35,20 @@ def main(
 
 if __name__ == "__main__":
 
-    remove_empty("./youtube8m")
+    remove_empty('./youtube8m')
 
     print("main process id {} starts.".format(os.getpid()), flush=True)
     open("./pid.log", "w", encoding="utf8").write(str(os.getpid())+" ")
-    output_dir = "./youtube8m/07"
-    id_file_dir = "./category-ids/07"
+    output_dir = "./youtube8m/08"
+    id_file_dir = "./category-ids/08"
     id_files = os.listdir(id_file_dir)
     id_files.sort()
     id_files = [os.path.join(id_file_dir, id_file) for id_file in id_files]
     error_ids = [line.split()[0] for line in open("./error_ids.log").readlines()]
 
-    manager = Manager()
-    id_files_share = manager.list()
-    id_files_share.extend(id_files)
+    main(output_dir=output_dir,
+         id_files_share=id_files,
+         error_ids=error_ids
+         )
 
-    num_cpus = os.cpu_count()
-    process_list = []
-
-    for i in [i for i in range(4,24)]:
-        process = Process(target=main, args=(output_dir, id_files_share, error_ids))
-        process.start()
-        process_list.append(process)
-        p = psutil.Process(process.pid)
-        p.cpu_affinity([i])
-        print("process id {} starts on cpu {}".format(process.pid, i), flush=True)
-        open("./pid.log", "a", encoding="utf8").write(str(process.pid)+" ")
-
-    for res in process_list:
-        res.join()
-    print("processes all finished.", flush=True)
+    print("all finished.", flush=True)

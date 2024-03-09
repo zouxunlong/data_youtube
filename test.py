@@ -1,10 +1,25 @@
 from pytube import YouTube
-
-yt = YouTube("https://www.youtube.com/watch?v=hTgaR2riBL8")
+yt = YouTube("https://www.youtube.com/watch?v=a4xB0SfWBmE")
 print("youtubeed", flush=True)
-stream = yt.streams.filter(file_extension='mp4',resolution='360p').first()
+stream = yt.streams.filter(only_audio=True).first()
 print("streammed", flush=True)
-stream.download("./", filename="hTgaR2riBL8.mp4")
+stream.download("./", filename="a4xB0SfWBmE.wav")
 print("downloaded", flush=True)
 
 
+# import time
+# from func_timeout import FunctionTimedOut, func_set_timeout
+
+# @func_set_timeout(1)
+# def task(i):
+#     try:
+#         time.sleep(2)
+#         print(i, flush=True)
+#     except Exception as e:
+#         print(e, flush=True)
+
+# try:
+#     task(1)
+# except FunctionTimedOut as e:
+#     print(e.msg.strip(), flush=True)
+#     print(2, flush=True)
