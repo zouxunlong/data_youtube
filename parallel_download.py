@@ -42,7 +42,7 @@ if __name__ == "__main__":
     print("main process id {} starts.".format(os.getpid()), flush=True)
     open("./pid.log", "w", encoding="utf8").write(str(os.getpid())+" ")
     output_dir = "./youtube8m"
-    id_file_dirs = ["./category-ids/07", "./category-ids/08", "./category-ids/02"]
+    id_file_dirs = ["./category-ids/00_thunder7", "./category-ids/09"]
 
     id_files=[]
     for id_file_dir in id_file_dirs:
