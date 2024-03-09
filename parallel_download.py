@@ -17,7 +17,7 @@ def main(
 
         print("tasks for id_file: {} started.".format(id_file), flush=True)
 
-        with ThreadPoolExecutor(max_workers=4) as pool:
+        with ThreadPoolExecutor(max_workers=6) as pool:
             for i, id in enumerate(open(id_file).readlines()):
                 id = id.strip()
 
@@ -42,7 +42,7 @@ if __name__ == "__main__":
     print("main process id {} starts.".format(os.getpid()), flush=True)
     open("./pid.log", "w", encoding="utf8").write(str(os.getpid())+" ")
     output_dir = "./youtube8m"
-    id_file_dirs = ["./category-ids/00_thunder7", "./category-ids/09"]
+    id_file_dirs = ["./category-ids/00_thunder5", "./category-ids/04"]
 
     id_files=[]
     for id_file_dir in id_file_dirs:
