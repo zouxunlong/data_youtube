@@ -40,8 +40,8 @@ if __name__ == "__main__":
 
     print("main process id {} starts.".format(os.getpid()), flush=True)
     open("./pid.log", "w", encoding="utf8").write(str(os.getpid())+" ")
-    output_dir = "./youtube8m/07"
-    id_file_dir = "./category-ids/07"
+    output_dir = "./youtube8m/09"
+    id_file_dir = "./category-ids/09"
     id_files = os.listdir(id_file_dir)
     id_files.sort()
     id_files = [os.path.join(id_file_dir, id_file) for id_file in id_files]
@@ -54,7 +54,7 @@ if __name__ == "__main__":
     num_cpus = os.cpu_count()
     process_list = []
 
-    for i in [i for i in range(4,24)]:
+    for i in [i for i in range(17)]:
         process = Process(target=main, args=(output_dir, id_files_share, error_ids))
         process.start()
         process_list.append(process)
