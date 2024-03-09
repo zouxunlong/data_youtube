@@ -1,9 +1,9 @@
 from pytube import YouTube
-yt = YouTube("https://www.youtube.com/watch?v=5wjoR1uDrCQ")
+yt = YouTube("https://www.youtube.com/watch?v=EGa1umZbUtA")
 print("youtubeed", flush=True)
 stream = yt.streams.filter(only_audio=True).first()
 print("streammed", flush=True)
-stream.download("./", filename="5wjoR1uDrCQ.wav")
+stream.download("./", filename="EGa1umZbUtA.wav")
 print("downloaded", flush=True)
 
 
