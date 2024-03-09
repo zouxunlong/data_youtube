@@ -37,6 +37,7 @@ def main(
 if __name__ == "__main__":
 
     remove_empty("./youtube8m")
+    open("./jumpped_ids.log", "w", encoding="utf8").write("")
 
     print("main process id {} starts.".format(os.getpid()), flush=True)
     open("./pid.log", "w", encoding="utf8").write(str(os.getpid())+" ")
