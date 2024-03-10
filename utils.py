@@ -1,4 +1,5 @@
 import os
+import time
 from func_timeout import FunctionTimedOut, func_set_timeout
 from pytube import YouTube
 
@@ -11,14 +12,14 @@ def remove_empty(dir):
 
 
 
-@func_set_timeout(10)
+@func_set_timeout(60)
 def download_video(id, directory, filename):
     try:
         video_url = 'https://www.youtube.com/watch?v={}'.format(id)
         yt = YouTube(video_url)
         stream = yt.streams.filter(only_audio=True).first()
         stream.download(directory, filename=filename)
-        print("DOWNLOADED: {}".format(id), flush=True)
+        print("DOWNLOADED: {} at {}".format(id, time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))), flush=True)
     except Exception as e:
         print("{} ERROR: {}".format(id, e), flush=True)
         open("./error_ids.log", "a", encoding="utf8").write("{} ERROR: {}".format(id, e) + "\n")

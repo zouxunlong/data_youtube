@@ -17,7 +17,7 @@ def main(
 
         print("tasks for id_file: {} started.".format(id_file), flush=True)
 
-        with ThreadPoolExecutor(max_workers=6) as pool:
+        with ThreadPoolExecutor(max_workers=16) as pool:
             for i, id in enumerate(open(id_file).readlines()):
                 id = id.strip()
 
@@ -38,9 +38,9 @@ if __name__ == "__main__":
 
     remove_empty("./youtube8m")
     open("./jumpped_ids.log", "w", encoding="utf8").write("")
-
+    open("./pid.log", "w", encoding="utf8").write("")
     print("main process id {} starts.".format(os.getpid()), flush=True)
-    open("./pid.log", "w", encoding="utf8").write(str(os.getpid())+" ")
+    
     output_dir = "./youtube8m"
     id_file_dirs = ["./category-ids/00_thunder5", "./category-ids/04"]
 
@@ -60,7 +60,7 @@ if __name__ == "__main__":
     num_cpus = os.cpu_count()
     process_list = []
 
-    for i in [i for i in range(26)]:
+    for i in [i for i in range(8)]:
         process = Process(target=main, args=(output_dir, id_files_share, error_ids))
         process.start()
         process_list.append(process)
@@ -68,6 +68,8 @@ if __name__ == "__main__":
         p.cpu_affinity([i])
         print("process id {} starts on cpu {}".format(process.pid, i), flush=True)
         open("./pid.log", "a", encoding="utf8").write(str(process.pid)+" ")
+    
+    open("./pid.log", "a", encoding="utf8").write(str(os.getpid())+" ")
 
     for res in process_list:
         res.join()
