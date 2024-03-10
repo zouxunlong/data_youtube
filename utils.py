@@ -32,3 +32,14 @@ def download(id, directory, filename):
         print("{} ERROR: {}".format(id, e.msg.strip()), flush=True)
         open("./jumpped_ids.log", "a", encoding="utf8").write("{} ERROR: {}".format(id, e.msg.strip()) + "\n")
 
+def count(dir):
+    count=0
+    for parent_dir, dirs, files in os.walk(dir):
+        for file in files:
+            path=os.path.join(parent_dir, file)
+            num=len(open(path).readlines())
+            count+=num
+    print(count, flush=True)
+
+if __name__=="__main__":
+    count("/home/zxl/data_youtube/category-ids")
