@@ -13,7 +13,7 @@ def remove_empty(dir):
 
 
 @func_set_timeout(60)
-def download_video(id, directory, filename):
+def download_video(id, directory, filename, error_file):
     try:
         video_url = 'https://www.youtube.com/watch?v={}'.format(id)
         yt = YouTube(video_url)
@@ -22,12 +22,12 @@ def download_video(id, directory, filename):
         print("DOWNLOADED: {} at {}".format(id, time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))), flush=True)
     except Exception as e:
         print("{} ERROR: {}".format(id, e), flush=True)
-        open("./error_ids.log", "a", encoding="utf8").write("{} ERROR: {}".format(id, e) + "\n")
+        open(error_file, "a", encoding="utf8").write("{} ERROR: {}".format(id, e) + "\n")
 
 
-def download(id, directory, filename):
+def download(id, directory, filename, error_file):
     try:
-        download_video(id, directory, filename)
+        download_video(id, directory, filename, error_file)
     except FunctionTimedOut as e:
         print("{} ERROR: {}".format(id, e.msg.strip()), flush=True)
         open("./jumpped_ids.log", "a", encoding="utf8").write("{} ERROR: {}".format(id, e.msg.strip()) + "\n")
@@ -42,4 +42,4 @@ def count(dir):
     print(count, flush=True)
 
 if __name__=="__main__":
-    count("/home/zxl/data_youtube/category-ids")
+    remove_empty("./youtube8m")
