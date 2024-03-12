@@ -14,11 +14,11 @@ def remove_empty(dir):
             if os.path.getsize(os.path.join(parent_dir, file)) ==0:
                 os.remove(os.path.join(parent_dir, file))
                 n+=1
-            #     continue
-            # if not file.endswith(".wav"):
-            #     os.remove(os.path.join(parent_dir, file))
-            #     n+=1
-            #     continue
+                continue
+            if not file.endswith(".wav"):
+                os.remove(os.path.join(parent_dir, file))
+                n+=1
+                continue
         print("complete {}, removed {}".format(parent_dir, n), flush=True)
     print("remove empty all completes.", flush=True)
 
