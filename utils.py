@@ -49,6 +49,7 @@ def download_video(id, directory, filename, error_file):
     except Exception as e:
         if "Forbidden" in str(e):
             os.remove(os.path.join(directory, filename))
+            print("{} ERROR: {}".format(id, e), flush=True)
         else:
             print("{} ERROR: {}".format(id, e), flush=True)
             open(error_file, "a", encoding="utf8").write("{} ERROR: {}".format(id, e) + "\n")
