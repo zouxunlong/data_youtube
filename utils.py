@@ -66,10 +66,11 @@ def count(dir):
     count=0
     for parent_dir, dirs, files in os.walk(dir):
         for file in files:
-            path=os.path.join(parent_dir, file)
-            num=len(open(path).readlines())
-            count+=num
+            if file.endswith(".errors"):
+                path=os.path.join(parent_dir, file)
+                num=len(open(path).readlines())
+                count+=num
     print(count, flush=True)
 
 if __name__=="__main__":
-    remove_forbidden("./category-ids")
+    count("./category-ids")
