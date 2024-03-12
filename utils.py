@@ -33,8 +33,11 @@ def download_video(id, directory, filename, error_file):
         stream.download(directory, filename=filename)
         print("DOWNLOADED: {} at {}".format(id, time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))), flush=True)
     except Exception as e:
-        print("{} ERROR: {}".format(id, e), flush=True)
-        open(error_file, "a", encoding="utf8").write("{} ERROR: {}".format(id, e) + "\n")
+        if "Forbidden" in str(e):
+            os.remove(os.path.join(directory, filename))
+        else:
+            print("{} ERROR: {}".format(id, e), flush=True)
+            open(error_file, "a", encoding="utf8").write("{} ERROR: {}".format(id, e) + "\n")
 
 
 def download(id, directory, filename, error_file):
