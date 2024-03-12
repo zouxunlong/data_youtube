@@ -73,7 +73,9 @@ def count(dir):
             if file.endswith(".txt"):
                 path=os.path.join(parent_dir, file)
                 count_ids+=len(open(path).readlines())
-    print("{} : \n count_ids: {}, \n count_error: {}, \n should get: {}".format(dir, count_ids, count_error, count_ids-count_error), flush=True)
+    print("{} : \n count_ids: {}, \n count_error: {}, \n should get: {}\n".format(dir, count_ids, count_error, count_ids-count_error), flush=True)
 
 if __name__=="__main__":
     count("./category-ids/07")
+    count("./category-ids/08")
+    count("./category-ids/09")
