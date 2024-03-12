@@ -5,10 +5,22 @@ from pytube import YouTube
 
 
 def remove_empty(dir):
+    print("remove empty starts.", flush=True)
     for parent_dir, dirs, files in os.walk(dir):
+        n=0
+        dirs.sort()
+        files.sort()
         for file in files:
             if os.path.getsize(os.path.join(parent_dir, file)) ==0:
                 os.remove(os.path.join(parent_dir, file))
+                n+=1
+            #     continue
+            # if not file.endswith(".wav"):
+            #     os.remove(os.path.join(parent_dir, file))
+            #     n+=1
+            #     continue
+        print("complete {}, removed {}".format(parent_dir, n), flush=True)
+    print("remove empty all completes.", flush=True)
 
 
 
