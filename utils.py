@@ -63,14 +63,17 @@ def download(id, directory, filename, error_file):
         open("./jumpped_ids.log", "a", encoding="utf8").write("{} ERROR: {}".format(id, e.msg.strip()) + "\n")
 
 def count(dir):
-    count=0
+    count_error=0
+    count_ids=0
     for parent_dir, dirs, files in os.walk(dir):
         for file in files:
             if file.endswith(".errors"):
                 path=os.path.join(parent_dir, file)
-                num=len(open(path).readlines())
-                count+=num
-    print(count, flush=True)
+                count_error+=len(open(path).readlines())
+            if file.endswith(".txt"):
+                path=os.path.join(parent_dir, file)
+                count_ids+=len(open(path).readlines())
+    print("{} : \n count_ids: {}, \n count_error: {}, \n should get: {}".format(dir, count_ids, count_error, count_ids-count_error), flush=True)
 
 if __name__=="__main__":
-    count("./category-ids")
+    count("./category-ids/07")
