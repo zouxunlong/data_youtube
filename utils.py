@@ -23,6 +23,20 @@ def remove_empty(dir):
     print("remove empty all completes.", flush=True)
 
 
+def remove_forbidden(dir):
+    print("remove forbidden starts.", flush=True)
+    for parent_dir, dirs, files in os.walk(dir):
+        n=0
+        dirs.sort()
+        files.sort()
+        for file in files:
+            if file.endswith(".errors"):
+                lines=open(os.path.join(parent_dir, file)).readlines()
+                lines=[line for line in lines if "Forbidden" not in line]
+                open(os.path.join(parent_dir, file), "w").write("".join(lines))
+                print("complete {}".format(os.path.join(parent_dir, file)), flush=True)
+    print("remove forbidden all completes.", flush=True)
+
 
 @func_set_timeout(60)
 def download_video(id, directory, filename, error_file):
@@ -57,4 +71,4 @@ def count(dir):
     print(count, flush=True)
 
 if __name__=="__main__":
-    remove_empty("./youtube8m")
+    remove_forbidden("./category-ids")
