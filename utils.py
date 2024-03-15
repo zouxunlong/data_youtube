@@ -78,5 +78,18 @@ def count(dir):
     unique_ids=set(count_ids)
     print("unique_ids: {}".format(len(unique_ids)), flush=True)
 
+
+def category_ids(dir):
+    count_ids=[]
+    for parent_dir, dirs, files in os.walk(dir):
+        for file in files:
+            if file.endswith(".txt"):
+                path=os.path.join(parent_dir, file)
+                count_ids+=open(path).readlines()
+
+    unique_ids=set(count_ids)
+    print("unique_ids: {}".format(len(unique_ids)), flush=True)
+    open("category_ids.txt", "w", encoding="utf8").write("".join(unique_ids))
+
 if __name__=="__main__":
-    download_ids()
+    category_ids("category-ids")
