@@ -6,14 +6,14 @@ from utils import remove_empty, download
 
 
 def main(
-        output_dir: str = "./youtube8m",
+        output_dir: str = "./y8m_audios",
         id_files_share: list[str] = [],
 ):
     while len(id_files_share)>0:
 
         id_file = id_files_share.pop()
         error_file=id_file.replace(".txt", ".errors")
-        directory = os.path.join(output_dir, id_file.split('/')[-2], id_file.split('/')[-1].split(".")[0])
+        directory = output_dir
         if os.path.exists(error_file):
             error_ids = [line.split()[0] for line in open(error_file).readlines()]
         else:
@@ -25,7 +25,7 @@ def main(
             for i, id in enumerate(open(id_file).readlines()):
                 id = id.strip()
 
-                if id in ["AccessDenie"] + error_ids:
+                if id in error_ids:
                     continue
 
                 filename = '{}.wav'.format(id)
@@ -40,7 +40,6 @@ def main(
 
 if __name__ == "__main__":
 
-    remove_empty("./youtube8m")
     open("./jumpped_ids.log", "w", encoding="utf8").write("")
     open("./pid.log", "w", encoding="utf8").write(str(os.getpid())+" ")
     print("main process id {} starts.".format(os.getpid()), flush=True)
