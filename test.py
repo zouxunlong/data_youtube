@@ -3,8 +3,8 @@ import os
 
 try:
     directory="./"
-    filename="pueCvDLPhNo.wav"
-    yt = YouTube("https://www.youtube.com/watch?v=pueCvDLPhNo")
+    filename="5GfKhwJ8FiI.wav"
+    yt = YouTube("https://www.youtube.com/watch?v=5GfKhwJ8FiI")
     print("youtubeed", flush=True)
     stream = yt.streams.filter(only_audio=True).first()
     print("streammed", flush=True)
