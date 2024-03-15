@@ -1,9 +1,8 @@
 /youtube8m/*
 /y8m_audios/*
 /ids_more/*
-/ids_category/*
+/ids_category_rest/*
 /audios_more/*
-/audios_category/*
 /__pycache__/*
 *.log
 cal_duration.sh
