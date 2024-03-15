@@ -4,6 +4,14 @@ from func_timeout import FunctionTimedOut, func_set_timeout
 from pytube import YouTube
 
 
+def download_ids():
+    from datasets import load_dataset
+
+    dataset = load_dataset("GeneralRincewind/Youtube8MFullVideoIDs")
+    dataset.save_to_disk("Youtube8MFullVideoIDs", num_proc=10)
+    for split, ds in dataset.items():
+        ds.to_json("Youtube8MFullVideoIDs.{}.jsonl".format(split), num_proc=10)
+
 def remove_empty(dir):
     print("remove empty starts.", flush=True)
     for parent_dir, dirs, files in os.walk(dir):
@@ -64,7 +72,7 @@ def download(id, directory, filename, error_file):
 
 def count(dir):
     count_error=0
-    count_ids=0
+    count_ids=[]
     for parent_dir, dirs, files in os.walk(dir):
         for file in files:
             if file.endswith(".errors"):
@@ -72,10 +80,11 @@ def count(dir):
                 count_error+=len(open(path).readlines())
             if file.endswith(".txt"):
                 path=os.path.join(parent_dir, file)
-                count_ids+=len(open(path).readlines())
-    print("{} : \n count_ids: {}, \n count_error: {}, \n should get: {}\n".format(dir, count_ids, count_error, count_ids-count_error), flush=True)
+                count_ids+=open(path).readlines()
+    print("\n{}:\n count_ids: {},\n count_error: {},\n should get: {}\n".format(dir, len(count_ids), count_error, len(count_ids)-count_error), flush=True)
+
+    unique_ids=set(count_ids)
+    print("unique_ids: {}".format(len(unique_ids)), flush=True)
 
 if __name__=="__main__":
-    count("./category-ids/07")
-    count("./category-ids/08")
-    count("./category-ids/09")
+    download_ids()

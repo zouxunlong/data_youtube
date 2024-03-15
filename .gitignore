@@ -2,3 +2,7 @@
 /jinyang/*
 /__pycache__/*
 *.log
+cal_duration.sh
+non_du_filepath.txt
+cal_duration_sub.sh
+count_duplicate.py
