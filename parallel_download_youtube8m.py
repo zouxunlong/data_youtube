@@ -2,18 +2,18 @@ from concurrent.futures import ThreadPoolExecutor
 from multiprocessing import Process, Manager
 import psutil
 import os
-from utils import remove_empty, download
+from utils import download
 
 
 def main(
-        output_dir: str = "./youtube8m",
+        output_dir: str = "./y8m_audios",
         id_files_share: list[str] = [],
 ):
     while len(id_files_share)>0:
 
         id_file = id_files_share.pop()
         error_file=id_file.replace(".txt", ".errors")
-        directory = os.path.join(output_dir, id_file.split('/')[-2], id_file.split('/')[-1].split(".")[0])
+        directory = output_dir
         if os.path.exists(error_file):
             error_ids = [line.split()[0] for line in open(error_file).readlines()]
         else:
@@ -40,12 +40,12 @@ def main(
 
 if __name__ == "__main__":
 
-    open("./jumpped_ids.log", "w", encoding="utf8").write("")
+    open("./jumpped_ids.log", "a", encoding="utf8").write("")
     open("./pid.log", "w", encoding="utf8").write(str(os.getpid())+" ")
     print("main process id {} starts.".format(os.getpid()), flush=True)
 
     output_dir = "./y8m_audios"
-    id_file_dirs = ["./ids_more"]
+    id_file_dirs = ["./ids_category"]
 
     id_files=[]
     for id_file_dir in id_file_dirs:
@@ -61,7 +61,7 @@ if __name__ == "__main__":
 
     process_list = []
 
-    for i in list(range(60)):
+    for i in [19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50]:
         process = Process(target=main, args=(output_dir, id_files_share))
         process.start()
         process_list.append(process)
