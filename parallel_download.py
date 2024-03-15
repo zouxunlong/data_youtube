@@ -44,12 +44,9 @@ if __name__ == "__main__":
     open("./jumpped_ids.log", "w", encoding="utf8").write("")
     open("./pid.log", "w", encoding="utf8").write(str(os.getpid())+" ")
     print("main process id {} starts.".format(os.getpid()), flush=True)
-    
-    output_dir = "./youtube8m"
-    id_file_dirs = ["./category-ids/00_thunder5", "./category-ids/00_thunder7", "./category-ids/01", "./category-ids/02", "./category-ids/03", "./category-ids/04", "./category-ids/05", "./category-ids/06", "./category-ids/07", "./category-ids/08", "./category-ids/09"]
-    # id_file_dirs = ["./category-ids/00_thunder7", "./category-ids/09"]
-    # id_file_dirs = ["./category-ids/00_thunder5"]
 
+    output_dir = "./y8m_audios"
+    id_file_dirs = ["./ids_more"]
 
     id_files=[]
     for id_file_dir in id_file_dirs:
@@ -57,16 +54,15 @@ if __name__ == "__main__":
             for file in files:
                 if file.endswith(".txt"):
                     id_files.append(os.path.join(parent_dir, file))
-    id_files.sort(reverse=True)
+    id_files.sort()
 
     manager = Manager()
     id_files_share = manager.list()
-    id_files_share.extend(id_files[-5:])
+    id_files_share.extend(id_files)
 
-    num_cpus = os.cpu_count()
     process_list = []
 
-    for i in [48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63]:
+    for i in list(range(60)):
         process = Process(target=main, args=(output_dir, id_files_share))
         process.start()
         process_list.append(process)

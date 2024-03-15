@@ -91,5 +91,21 @@ def category_ids(dir):
     print("unique_ids: {}".format(len(unique_ids)), flush=True)
     open("category_ids.txt", "w", encoding="utf8").write("".join(unique_ids))
 
+def more_ids():
+    video_ids=set(open("video_ids.txt").readlines())
+    category_ids=set(open("category_ids.txt").readlines())
+    print("video_ids: {}".format(len(video_ids)), flush=True)
+    print("category_ids: {}".format(len(category_ids)), flush=True)
+    more_ids=video_ids-category_ids
+    print("more_ids: {}".format(len(more_ids)), flush=True)
+    open("more_ids.txt", "w", encoding="utf8").write("".join(more_ids))
+
+def split():
+    ids=open("ids_more.txt").readlines()
+    total=len(ids)
+    chunk=total//60
+    for i in range(61):
+        open("ids_more/{}.txt".format(i), "w", encoding="utf8").write("".join(ids[chunk*i:chunk*(i+1)]))
+
 if __name__=="__main__":
-    category_ids("category-ids")
+    split()
