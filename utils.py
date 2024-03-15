@@ -108,4 +108,7 @@ def split():
         open("ids_more/{}.txt".format(i), "w", encoding="utf8").write("".join(ids[chunk*i:chunk*(i+1)]))
 
 if __name__=="__main__":
-    split()
+    files=os.listdir("./y8m_audios")
+    lines=open("ids_category.txt").readlines()
+    print(len(files), flush=True)
+    print(len(lines), flush=True)
