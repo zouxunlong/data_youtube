@@ -4,14 +4,6 @@ from func_timeout import FunctionTimedOut, func_set_timeout
 from pytube import YouTube
 
 
-def download_ids():
-    from datasets import load_dataset
-
-    dataset = load_dataset("GeneralRincewind/Youtube8MFullVideoIDs")
-    dataset.save_to_disk("Youtube8MFullVideoIDs", num_proc=10)
-    for split, ds in dataset.items():
-        ds.to_json("Youtube8MFullVideoIDs.{}.jsonl".format(split), num_proc=10)
-
 def remove_empty(dir):
     print("remove empty starts.", flush=True)
     for parent_dir, dirs, files in os.walk(dir):
