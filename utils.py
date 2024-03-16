@@ -108,12 +108,9 @@ def split():
         open("ids_more/{}.txt".format(i), "w", encoding="utf8").write("".join(ids[chunk*i:chunk*(i+1)]))
 
 if __name__=="__main__":
-    files=os.listdir("./y8m_audios")
-    downloaded_ids=[file.split(".")[0] for file in files]
-    ids_more=[id.strip() for id in open("ids_more.txt").readlines()]
-    print("ids_more&y8m_audios:{}".format(len(set(ids_more)&set(downloaded_ids))), flush=True)
-    for i, id in enumerate(set(ids_more)&set(downloaded_ids)):
-        os.remove("y8m_audios/{}.wav".format(id))
-        print(i, flush=True)
+
+    lines=open("ids_all.txt").readlines()
+    print(len(lines), flush=True)
+
     print("complete", flush=True)
 
