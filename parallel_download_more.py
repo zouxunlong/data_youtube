@@ -40,7 +40,7 @@ def main(
 
 if __name__ == "__main__":
 
-    open("./jumpped_ids.log", "w", encoding="utf8").write("")
+    open("./jumpped_ids.log", "a", encoding="utf8").write("")
     open("./pid2.log", "w", encoding="utf8").write(str(os.getpid())+" ")
     print("main process id {} starts.".format(os.getpid()), flush=True)
 
@@ -57,11 +57,11 @@ if __name__ == "__main__":
 
     manager = Manager()
     id_files_share = manager.list()
-    id_files_share.extend(id_files[30:])
+    id_files_share.extend(id_files)
 
     process_list = []
 
-    for i in [96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127]:
+    for i in list(range(64)):
         process = Process(target=main, args=(output_dir, id_files_share))
         process.start()
         process_list.append(process)

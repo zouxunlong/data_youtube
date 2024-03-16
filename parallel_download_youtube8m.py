@@ -59,7 +59,7 @@ if __name__ == "__main__":
 
     process_list = []
 
-    for i in [19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42]:
+    for i in [24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47]:
         process = Process(target=main, args=(output_dir, id_files_share))
         process.start()
         process_list.append(process)
