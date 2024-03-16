@@ -108,9 +108,14 @@ def split():
         open("ids_more/{}.txt".format(i), "w", encoding="utf8").write("".join(ids[chunk*i:chunk*(i+1)]))
 
 if __name__=="__main__":
-
-    lines=open("ids_all.txt").readlines()
-    print(len(lines), flush=True)
-
-    print("complete", flush=True)
+    dirs=["audios_more"]
+    for dir in dirs:
+        for parent_dir, dirs, files in os.walk(dir):
+            dirs.sort()
+            files.sort()
+            for file in files:
+                sub_dir=file[:2]
+                os.makedirs("./y8m/{}".format(sub_dir), exist_ok=True)
+                os.rename("./{}/{}".format(parent_dir, file), "./y8m/{}/{}".format(sub_dir, file))
+        print("complete {}".format(parent_dir))
 
