@@ -1,9 +1,10 @@
 from concurrent.futures import ThreadPoolExecutor
 from multiprocessing import Process, Manager
-from func_timeout import FunctionTimedOut, func_set_timeout
-import psutil
 import os
+import time
+from func_timeout import FunctionTimedOut, func_set_timeout
 from pytube import YouTube
+import psutil
 
 
 
@@ -88,7 +89,7 @@ if __name__ == "__main__":
 
     process_list = []
 
-    for i in list(range(64)):
+    for i in list(range(4)):
         process = Process(target=main, args=(output_dir, id_files_share))
         process.start()
         process_list.append(process)
