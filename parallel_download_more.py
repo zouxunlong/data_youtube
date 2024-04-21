@@ -1,8 +1,36 @@
 from concurrent.futures import ThreadPoolExecutor
 from multiprocessing import Process, Manager
+from func_timeout import FunctionTimedOut, func_set_timeout
 import psutil
 import os
-from utils import download
+from pytube import YouTube
+
+
+
+@func_set_timeout(60)
+def download_video(id, directory, filename, error_file):
+    try:
+        video_url = 'https://www.youtube.com/watch?v={}'.format(id)
+        yt = YouTube(video_url)
+        stream = yt.streams.filter(only_audio=True).first()
+        stream.download(directory, filename=filename)
+        print("DOWNLOADED: {} at {}".format(id, time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))), flush=True)
+    except Exception as e:
+        if "Forbidden" in str(e):
+            os.remove(os.path.join(directory, filename))
+            print("{} ERROR: {}".format(id, e), flush=True)
+        else:
+            print("{} ERROR: {}".format(id, e), flush=True)
+            open(error_file, "a", encoding="utf8").write("{} ERROR: {}".format(id, e) + "\n")
+
+
+def download(id, directory, filename, error_file):
+    try:
+        download_video(id, directory, filename, error_file)
+    except FunctionTimedOut as e:
+        print("{} ERROR: {}".format(id, e.msg.strip()), flush=True)
+        open("./jumpped_ids.log", "a", encoding="utf8").write("{} ERROR: {}".format(id, e.msg.strip()) + "\n")
+
 
 
 def main(
@@ -40,8 +68,7 @@ def main(
 
 if __name__ == "__main__":
 
-    open("./jumpped_ids.log", "a", encoding="utf8").write("")
-    open("./pid2.log", "w", encoding="utf8").write(str(os.getpid())+" ")
+    open("./pid.log", "w", encoding="utf8").write(str(os.getpid())+" ")
     print("main process id {} starts.".format(os.getpid()), flush=True)
 
     output_dir = "./audios_more"
@@ -68,7 +95,7 @@ if __name__ == "__main__":
         p = psutil.Process(process.pid)
         p.cpu_affinity([i])
         print("process id {} starts on cpu {}".format(process.pid, i), flush=True)
-        open("./pid2.log", "a", encoding="utf8").write(str(process.pid)+" ")
+        open("./pid.log", "a", encoding="utf8").write(str(process.pid)+" ")
 
     for res in process_list:
         res.join()

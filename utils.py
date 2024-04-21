@@ -62,6 +62,7 @@ def download(id, directory, filename, error_file):
         print("{} ERROR: {}".format(id, e.msg.strip()), flush=True)
         open("./jumpped_ids.log", "a", encoding="utf8").write("{} ERROR: {}".format(id, e.msg.strip()) + "\n")
 
+
 def count(dir):
     count_error=0
     count_ids=[]
